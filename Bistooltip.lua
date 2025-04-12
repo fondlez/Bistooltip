@@ -46,7 +46,8 @@ local function printSpecLine(tooltip, slot, class_name, spec_name)
         prefix = ""
     end
     local left_text = prefix .. "|T" .. Bistooltip_spec_icons[class_name][spec_name] .. ":14|t " .. spec_name
-    if (slot_name == "Off hand" or slot_name == "Weapon" or slot_name == "Weapon 1h" or slot_name == "Weapon 2h") then
+    -- if (slot_name == "Off hand" or slot_name == "Weapon" or slot_name == "Weapon 1h" or slot_name == "Weapon 2h") then
+    if string.find(string.lower(slot_name), "weapon") or string.find(string.lower(slot_name), "offhand") then
         left_text = left_text .. " (" .. slot_name .. ")"
     end
     tooltip:AddDoubleLine(left_text, slot_ranks, 1, 0.8, 0)
@@ -214,25 +215,25 @@ local function OnGameTooltipSetItem(tooltip)
     -- -- Iterate through each class and specialization
     for class, specs in caseInsensitivePairs(Bistooltip_spec_icons) do
         for spec, icon in pairs(specs) do
-            -- Skip the 'classIcon' entry
             if spec ~= "classIcon" then
-                -- Search for the item ID in the current class and spec
-                local foundPhases = searchIDInBislistsClassSpec(Bistooltip_bislists, itemId, class, spec)
-
-                -- Only proceed if search function returns a non-nil value
-                if foundPhases then
-                    -- Create a single line with icon, class, spec, and found phases
-                    local iconString = string.format("|T%s:18|t", icon) -- 18 is the size of the icon
-                    local lineText = string.format("%s %s - %s", iconString, class, spec)
-                    -- tooltip:AddLine(lineText, 1, 1, 1)
-                    tooltip:AddDoubleLine(lineText, foundPhases, 1, 1, 0, 1, 1, 0)
-
-                    -- Add spacing between entries
-                    -- tooltip:AddLine(" ", 1, 1, 0)
+                if not specFiltered(class, spec) then  -- ✅ skip filtered specs
+                    local foundPhases = searchIDInBislistsClassSpec(Bistooltip_bislists, itemId, class, spec)
+                    if foundPhases then
+                        local iconString = string.format("|T%s:18|t", icon)
+                        local lineText = string.format("%s %s - %s", iconString, class, spec)
+                        -- tooltip:AddDoubleLine(lineText, foundPhases, 1, 1, 0, 1, 1, 0)
+                        if specHighlighted(class, spec) then
+                            local boldLineText = string.format("|cffff2020|T%s:18|t %s - %s|r", icon, class, spec)
+                            tooltip:AddDoubleLine(boldLineText, foundPhases)
+                        else
+                            tooltip:AddDoubleLine(lineText, foundPhases, 1, 1, 0, 1, 1, 0)
+                        end
+                    end
                 end
             end
         end
     end
+    
 
     -- if Bistooltip_char_equipment and Bistooltip_char_equipment[itemId] ~= nil then
     --     tooltip:AddLine(" ", 1, 1, 0)

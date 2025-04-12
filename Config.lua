@@ -12,7 +12,8 @@ local sources = {
 }
 
 Bistooltip_source_to_url = {
-    ["wowtbc"] = "wowtbc.gg/wotlk"
+    --["wowtbc"] = "wowtbc.gg/wotlk"
+    ["wowtbc"] = "wowhead.com/tbc"
 }
 
 local db_defaults = {

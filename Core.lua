@@ -92,15 +92,25 @@ local function createEquipmentWatcher()
             flag = false
         end
     end)
-
 end
 
 function BistooltipAddon:OnInitialize()
     createEquipmentWatcher()
     BistooltipAddon.AceAddonName = "Bis-Tooltip"
-    BistooltipAddon.AddonNameAndVersion = "Bis-Tooltip 3.3.5a backport by Silver [DisruptionAuras]"
+    BistooltipAddon.AddonNameAndVersion = "Bis-Tooltip 3.3.5a backport by Silver - TBC version by Boegi"
     BistooltipAddon:initConfig()
     BistooltipAddon:addMapIcon()
     BistooltipAddon:initBislists()
     BistooltipAddon:initBisTooltip()
+
+    -- 🛠️ Initialize missing spec filters
+    for classIndex, classInfo in pairs(Bistooltip_wowtbc_classes) do
+        local class_name = classInfo.name
+        BistooltipAddon.db.char.filter_specs[class_name] = BistooltipAddon.db.char.filter_specs[class_name] or {}
+        for _, spec_name in ipairs(classInfo.specs) do
+            if BistooltipAddon.db.char.filter_specs[class_name][spec_name] == nil then
+                BistooltipAddon.db.char.filter_specs[class_name][spec_name] = true
+            end
+        end
+    end
 end

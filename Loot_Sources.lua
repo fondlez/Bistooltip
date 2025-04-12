@@ -794,6 +794,14 @@ lootTable = {
         ["Valithria Dreamwalker"] = {},
         ["Sindragosa"] = {},
         ["The Lich King"] = {}
+    },
+    ["The Eye"] = {
+        ["Kael'thas Sunstrider"] = {30018}
+    },
+    ["Crafting"] = {
+        ["Leatherworking"] = {29523, 29524},
+        ["Blacksmithing"] = {23539},
+        ["Tailoring"] = {21873}
     }
 
     -- [] = {
