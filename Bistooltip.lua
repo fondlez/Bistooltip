@@ -177,7 +177,7 @@ local function GetItemSource(itemId)
     end
 
     -- If not found in lootTable, fallback to DataStore_Inventory (example usage)
-    if not source then
+    if not source and DataStore_Inventory then
         -- Replace with your logic to load DataStore_Inventory and get source
         local Instance, Boss = DataStore_Inventory:GetSource(itemId)
         if Instance and Boss then
